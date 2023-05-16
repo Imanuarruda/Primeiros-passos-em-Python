@@ -5,12 +5,13 @@ from time import sleep
 jogadores = []
 sorteio = []
 classificacao = []
+limite = []
 frutas = ["banana","maça","uva","pera"]
 casa = ["sofá","mesa","televisão","cama"]
 roda = ["RS1,00","R$500,00","R$200,00","Passou a vez","R$100,00","Passou a vez","R$1,00","R$100,00","Perdeu tudo",
         "R$1.000,00"]
 opcao = casa + frutas
-rodada = acerto = 0
+rodada = "acerto"
 
 
 print(70*"=","\n""                            RODA A RODA""\n",70*"=")
@@ -29,7 +30,7 @@ os.system("cls")
 print(70*"=","\n""                            RODA A RODA""\n",70*"=")
 while True:
     quant_jogadores = int(input("Quantos jogadores irão jogar: (2 a 4 jogadores) "))
-    if (quant_jogadores > 1) and (quant_jogadores < 5):
+    if quant_jogadores > 1  and quant_jogadores < 5:
         break
 for s in range(quant_jogadores):
     jogadores.append(int(randint(1,10)))
@@ -52,6 +53,7 @@ print()
 palavra = secrets.choice(casa + frutas)
 print(palavra) #TIRAR
 espacos = ["_"]*len(palavra)
+limite = len(palavra) * ["_"]
 if palavra in casa:
     dica = "casa"
 else:
@@ -62,11 +64,25 @@ for e in range(len(palavra)):
 print()
 while "_" in espacos:
     for j in range(quant_jogadores):
-        print(f"\n{classificacao[j][1]} sua vez de jogar")
-        print(f"A palavra é relacionada a {dica}")
-        letra = input("\nDigite uma letra: ")
-        for l in range(len(palavra)):
-            if letra == palavra[l]:
-                espacos[l] = letra
-            print(espacos[l],end=" ")
-        print()
+        rodada = "acerto"
+        while rodada == "acerto":
+            print(limite)
+            print(f"\n{classificacao[j][1]} sua vez de jogar")
+            print(f"A palavra é relacionada a {dica}")
+            if len(limite) <= 3:
+                palpite = input("\nQual a palavra? ")
+                if palpite == palavra:
+                    print("Você acertouuu!!")
+                    print(palavra)
+                    exit()
+            letra = input("\nDigite uma letra: ")
+            for l in range(len(palavra)):
+                if letra == palavra[l]:
+                    espacos[l] = letra
+                    rodada = "acerto"
+                    limite.pop()
+                if letra not in palavra:
+                    rodada = "errou"
+                print(espacos[l],end=" ")
+            print()
+
