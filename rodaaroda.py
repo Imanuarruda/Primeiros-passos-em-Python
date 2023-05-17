@@ -38,15 +38,14 @@ for s in range(quant_jogadores):
     sorteio.append(jogadores[:])
     del(jogadores[:])
 os.system("cls")
-
 print(70*"=","\n""                            RODA A RODA""\n",70*"=")
 print("O soteio está acontecendo...")
 classificacao = sorted(sorteio)
 classificacao.reverse()
-print(classificacao) #TIRAR
 for o in range(quant_jogadores):
     print(f"{o+1}º: {classificacao[o][1]} tirou {classificacao[o][0]}")
     sleep(1)
+os.system("cls")
 
 print(70*"=","\n""                            RODA A RODA""\n",70*"=")
 print()
@@ -59,23 +58,26 @@ if palavra in casa:
 else:
     if palavra in frutas:
         dica = "frutas"
-for e in range(len(palavra)):
-    print(espacos[e],end=" ")
-print()
+
 while "_" in espacos:
     for j in range(quant_jogadores):
         rodada = "acerto"
         while rodada == "acerto":
-            print(limite)
-            print(f"\n{classificacao[j][1]} sua vez de jogar")
-            print(f"A palavra é relacionada a {dica}")
+            print(f"\n{classificacao[j][1]} sua vez de jogar\n")
+            for e in range(len(palavra)):
+                print(espacos[e], end=" ")
+            print()
+            print(f"\nA palavra é relacionada a {dica}")
             if len(limite) <= 3:
-                palpite = input("\nQual a palavra? ")
+                palpite = input("\nQual a palavra? ").lower().strip()
                 if palpite == palavra:
                     print("Você acertouuu!!")
-                    print(palavra)
+                    print(f"A palavra é {palavra}")
+                    sleep(3)
                     exit()
-            letra = input("\nDigite uma letra: ")
+                else:
+                    print("Errado, está ainda não é a palavra")
+            letra = input("\nDigite uma letra: ").lower().strip()
             for l in range(len(palavra)):
                 if letra == palavra[l]:
                     espacos[l] = letra
@@ -83,6 +85,11 @@ while "_" in espacos:
                     limite.pop()
                 if letra not in palavra:
                     rodada = "errou"
-                print(espacos[l],end=" ")
+                print(espacos[l], end=" ")
             print()
-
+            if letra in palavra:
+                print(f"Certo!! Letra {letra} tem na palvra")
+            else:
+                print(f"AHHH! Letra {letra} não tem na palvra")
+            sleep(2)
+            os.system("cls")
