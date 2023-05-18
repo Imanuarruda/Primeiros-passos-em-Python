@@ -1,4 +1,5 @@
 import os
+import random
 import secrets
 from random import randint
 from time import sleep
@@ -8,8 +9,8 @@ classificacao = []
 limite = []
 frutas = ["banana","maça","uva","pera"]
 casa = ["sofá","mesa","televisão","cama"]
-roda = ["RS1,00","R$500,00","R$200,00","Passou a vez","R$100,00","Passou a vez","R$1,00","R$100,00","Perdeu tudo",
-        "R$1.000,00"]
+roda = ["1.00","500.00","200.00","Passou a vez","100.00","Passou a vez","1.00","100.00","Perdeu tudo",
+        "1.000.00","500.00","1.00","200.00","100.00","250.00","700.00"]
 opcao = casa + frutas
 rodada = "acerto"
 
@@ -24,7 +25,7 @@ print("- Serão inscritos os participantes e decidido a ordem dos jogadores.""\n
       "\n""- Cada rodada com acerto o participante ganhará pontos.""\n""- Caso a roda pare em -Passou a vez- o jogador "
       "perderá a jogada.""\n""- Caso a roda pare em -Perdeu tudo- o jogador perderá tudo que ganhou até o momento.""\n"
       "- Ganha o jogo que estiver com mais pontos.")
-#sleep(30)
+sleep(30)
 os.system("cls")
 
 print(70*"=","\n""                            RODA A RODA""\n",70*"=")
@@ -46,11 +47,7 @@ for o in range(quant_jogadores):
     print(f"{o+1}º: {classificacao[o][1]} tirou {classificacao[o][0]}")
     sleep(1)
 os.system("cls")
-
-print(70*"=","\n""                            RODA A RODA""\n",70*"=")
-print()
 palavra = secrets.choice(casa + frutas)
-print(palavra) #TIRAR
 espacos = ["_"]*len(palavra)
 limite = len(palavra) * ["_"]
 if palavra in casa:
@@ -62,7 +59,19 @@ else:
 while "_" in espacos:
     for j in range(quant_jogadores):
         rodada = "acerto"
+        roleta = secrets.choice(roda)
+        if roleta == "Passou a vez" or roleta == "Perdeu tudo":
+            rodada = "errou"
+        os.system("cls")
+        if roleta == "Passou a vez" or roleta == "Perdeu tudo":
+            print(f"Ahh, {classificacao[j][1]} {roleta}")
+            sleep(3)
+            os.system("cls")
+        print(70 * "=", "\n""                            RODA A RODA""\n", 70 * "=")
+        print("\bRodando a roleta...")
+        sleep(1)
         while rodada == "acerto":
+            print(f"\nValendo R${roleta} reais")
             print(f"\n{classificacao[j][1]} sua vez de jogar\n")
             for e in range(len(palavra)):
                 print(espacos[e], end=" ")
@@ -73,6 +82,7 @@ while "_" in espacos:
                 if palpite == palavra:
                     print("Você acertouuu!!")
                     print(f"A palavra é {palavra}")
+                    print(f"\n{classificacao[j][1]} ganhou o jogo!!!!")
                     sleep(3)
                     exit()
                 else:
@@ -81,15 +91,27 @@ while "_" in espacos:
             for l in range(len(palavra)):
                 if letra == palavra[l]:
                     espacos[l] = letra
-                    rodada = "acerto"
                     limite.pop()
+                    roleta = random.choice(roda)
+                    if roleta == "Passou a vez" or roleta == "Perdeu tudo":
+                        rodada = "errou"
                 if letra not in palavra:
                     rodada = "errou"
                 print(espacos[l], end=" ")
             print()
             if letra in palavra:
-                print(f"Certo!! Letra {letra} tem na palvra")
+                print(f"\nCerto!! Letra {letra} tem na palvra")
             else:
-                print(f"AHHH! Letra {letra} não tem na palvra")
+                print(f"\nAHHH! Letra {letra} não tem na palvra")
+            if len(limite) == 0:
+                print("\nA palavra foi descorberta. Parabens!")
+                print(f"\n{classificacao[j][1]} ganhou o jogo!!!!")
+                sleep(3)
+                exit()
             sleep(2)
             os.system("cls")
+            print(70 * "=", "\n""                            RODA A RODA""\n", 70 * "=")
+            print("\nRodando a roleta...")
+            if roleta == "Passou a vez" or roleta == "Perdeu tudo":
+                print(f"\nAhh, {classificacao[j][1]} {roleta}")
+                sleep(3)
